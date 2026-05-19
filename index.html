@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>...</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'Courier New',monospace;overflow:hidden}
+.box{text-align:center;padding:2rem;max-width:400px;width:90%}
+.skull{font-size:64px;margin-bottom:1rem;display:inline-block;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+.title{color:#f44;font-size:20px;font-weight:bold;letter-spacing:3px;margin-bottom:6px;text-transform:uppercase}
+.subtitle{color:#fa0;font-size:11px;letter-spacing:2px;margin-bottom:1.5rem;text-transform:uppercase}
+.timer{font-size:72px;font-weight:bold;color:#f44;letter-spacing:6px;margin-bottom:10px;animation:flicker 2s infinite}
+@keyframes flicker{0%,100%{opacity:1}93%{opacity:1}95%{opacity:.4}97%{opacity:1}}
+.progress-wrap{background:#1a0000;border:1px solid #f44;border-radius:4px;height:10px;margin:12px 0 20px;overflow:hidden}
+.progress-fill{height:100%;background:#f44;transition:width 1s linear;border-radius:4px}
+.list{text-align:left;margin:0 auto 1.5rem;max-width:280px}
+.item{font-size:12px;color:#fa0;margin:6px 0;display:flex;align-items:center;gap:8px}
+.item span{color:#f44;font-size:14px}
+.joke{display:none;animation:fadeIn .8s forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.joke-emoji{font-size:64px;margin-bottom:1rem}
+.joke-title{color:#0f0;font-size:22px;letter-spacing:2px;margin-bottom:8px}
+.joke-sub{color:#5a5;font-size:13px;line-height:1.6}
+.replay{margin-top:1.5rem;background:transparent;border:1px solid #333;color:#555;padding:10px 24px;border-radius:4px;font-family:monospace;font-size:12px;cursor:pointer}
+.replay:hover{border-color:#555;color:#888}
+</style>
+</head>
+<body>
+<div class="box">
+  <div id="main">
+    <div class="skull" id="skull">💀</div>
+    <div class="title">DISPOSITIVO INFECTADO</div>
+    <div class="subtitle">AUTODESTRUCCIÓN DE DATOS EN PROGRESO</div>
+    <div class="timer" id="timer">00:15</div>
+    <div class="progress-wrap">
+      <div class="progress-fill" id="prog" style="width:100%"></div>
+    </div>
+    <div class="list">
+      <div class="item"><span>✖</span> Contactos exportados</div>
+      <div class="item"><span>✖</span> Fotos accedidas</div>
+      <div class="item"><span>✖</span> Credenciales capturadas</div>
+      <div class="item" id="enc"><span>⟳</span> Cifrando almacenamiento...</div>
+    </div>
+  </div>
+  <div class="joke" id="joke">
+    <div class="joke-emoji">😄</div>
+    <div class="joke-title">¡ERA UNA BROMA!</div>
+    <div class="joke-sub">Tu dispositivo está perfectamente bien.<br>No ha pasado nada. Esto sólo es una muestra de lo fácil que alguien puede ser engañado</div>
+    <button class="replay" onclick="restart()">Repetir broma</button>
+  </div>
+</div>
+<script>
+var secs=15,interval=null;
+function pad(n){return n<10?'0'+n:n}
+function start(){
+  secs=15;
+  document.getElementById('timer').textContent='00:'+pad(secs);
+  document.getElementById('timer').style.color='#f44';
+  document.getElementById('skull').textContent='💀';
+  document.getElementById('prog').style.width='100%';
+  document.getElementById('joke').style.display='none';
+  document.getElementById('main').style.display='block';
+  document.getElementById('enc').style.color='#fa0';
+  interval=setInterval(function(){
+    secs--;
+    document.getElementById('timer').textContent='00:'+pad(secs);
+    document.getElementById('prog').style.width=(secs/15*100)+'%';
+    if(secs<=0){
+      clearInterval(interval);
+      document.getElementById('timer').textContent='00:00';
+      document.getElementById('timer').style.color='#0f0';
+      document.getElementById('skull').textContent='😄';
+      setTimeout(function(){
+        document.getElementById('main').style.display='none';
+        document.getElementById('joke').style.display='block';
+      },800);
+    }
+  },1000);
+}
+function restart(){start()}
+start();
+</script>
+</body>
+</html>
